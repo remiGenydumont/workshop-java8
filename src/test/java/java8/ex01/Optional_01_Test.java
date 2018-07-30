@@ -20,8 +20,8 @@ public class Optional_01_Test {
 
 
     // tag::findMethod[]
-    <T> T find(List<T> list, Predicate<T> predicate) {
-        T result = null;
+    <T> T find(List<T> list, Predicate<T> predicate, T defaultValue) {
+        T result = defaultValue;
 
         for (T p : list) {
             if (predicate.test(p)) {
@@ -42,7 +42,7 @@ public class Optional_01_Test {
 
         // TODO invoquer la méthode find(List<T> list, Predicate<T> predicate)
         // TODO age == 10
-        Optional<Person> result = null;
+        Optional<Person> result = Optional.of(find(personList, (p)->p.getAge() == 10, null));
 
         assertThat(result, instanceOf(Optional.class));
         assertThat(result.isPresent(), is(true));
@@ -59,7 +59,7 @@ public class Optional_01_Test {
 
         // TODO invoquer la méthode find(List<T> list, Predicate<T> predicate)
         // TODO age == 400
-        Optional<Person> result = null;
+        Optional<Person> result = Optional.ofNullable(find(personList, (p)->p.getAge()== 400, null));;
 
         assertThat(result, instanceOf(Optional.class));
         assertThat(result.isPresent(), is(false));
@@ -73,9 +73,10 @@ public class Optional_01_Test {
 
         // TODO invoquer la méthode find(List<T> list, Predicate<T> predicate)
         // TODO age == 10 et firstname == "last_10"
-        Optional<Person> result = null;
+        Optional<Person> result = Optional.ofNullable(find(personList, (p)->p.getAge()== 10 && p.getFirstname().equals("last_10"), null));;
 
         // TODO Utiliser la méthode orElseThrow pour déclencher l'exception NotFountException si non trouvé
+        result.orElseThrow(()->new NotFountException());
     }
 
     @Test
@@ -90,7 +91,8 @@ public class Optional_01_Test {
 
         // TODO invoquer la méthode find(List<T> list, Predicate<T> predicate, T defaultValue)
         // TODO predicate => age == 400
-        Person result = null;
+      
+        Person result = find(personList, (p)->p.getAge()== 400, defaultValue);
 
         assertThat(result, notNullValue());
         assertThat(result, hasProperty("firstname", is("DEFAULT")));
